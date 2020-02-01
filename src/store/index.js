@@ -9,7 +9,7 @@ export default new Vuex.Store({
   },
   mutations: {
     addFavorite(state, payload) {
-      if (state.favorites && state.favorites.length < 4)
+      if (state.favorites && state.favorites.length < 5)
         state.favorites.push(payload);
     },
     removeFavorite(state, payload) {
@@ -23,6 +23,9 @@ export default new Vuex.Store({
   getters: {
     favorite: state => payload => {
       return state.favorites.indexOf(payload) !== -1;
+    },
+    canAddFavorite(state) {
+      return state.favorites && state.favorites.length < 5;
     }
   },
   actions: {},

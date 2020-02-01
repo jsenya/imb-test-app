@@ -112,6 +112,25 @@
         </div>
       </v-expand-transition>
     </v-card>
+
+    <v-dialog v-model="showDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">The Force is With You</v-card-title>
+
+        <v-card-text>
+          You have reached the maximum amount of favorites you can have at the
+          moment, sorry. You can remove some though to add {{ character_name }}.
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn color="green darken-1" text @click="showDialog = false">
+            Dismiss
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -125,6 +144,7 @@ export default {
     api: new ApiService(),
     isFavorite: false,
     show: false,
+    showDialog: false,
     character_name: "",
     character_details: {
       name: null,
@@ -178,10 +198,14 @@ export default {
       }
     },
     toggleFavorite() {
-      this.isFavorite = !this.isFavorite;
-      this.isFavorite
-        ? this.$store.commit("addFavorite", this.character_details.url)
-        : this.$store.commit("removeFavorite", this.character_details.url);
+      if (this.$store.getters.canAddFavorite || this.isFavorite) {
+        this.isFavorite = !this.isFavorite;
+        this.isFavorite
+          ? this.$store.commit("addFavorite", this.character_details.url)
+          : this.$store.commit("removeFavorite", this.character_details.url);
+      } else {
+        this.showDialog = true;
+      }
     }
   },
 
