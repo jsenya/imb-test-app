@@ -213,8 +213,6 @@ export default {
     if ("name" in this.$router.currentRoute.params) {
       this.character_name = this.$router.currentRoute.params.name;
       this.getCharacter();
-    } else {
-      console.log("select a character");
     }
   }
 };
