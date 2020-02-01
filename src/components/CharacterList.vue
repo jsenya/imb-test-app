@@ -14,6 +14,7 @@
     </v-card-title>
     <v-data-table
       fixed-header
+      hide-default-footer
       height="300px"
       :server-items-length="count"
       :loading="isLoading"
@@ -22,7 +23,6 @@
       :headers="headers"
       :items="items"
       :search="search"
-      :items-per-page="10"
       class="elevation-5"
       @click:row="rowClicked"
     >
@@ -30,6 +30,15 @@
         <v-icon medium :color="getColor(item.favorite)" class="linkable"
           >mdi-heart</v-icon
         >
+      </template>
+      <template slot="footer">
+        <v-pagination
+          v-model="page"
+          :length="pageLength"
+          :total-visible="7"
+          @next="navigate"
+          @previous="navigate"
+        ></v-pagination>
       </template>
     </v-data-table>
   </v-card>
@@ -46,6 +55,7 @@ export default {
       isLoading: true,
       baseUrl: "https://swapi.co/api/people",
       search: "",
+      page: 1,
       headers: [
         {
           text: "Name",
@@ -69,6 +79,9 @@ export default {
     count() {
       if (this.swcharacters) return this.swcharacters.count;
       return 0;
+    },
+    pageLength() {
+      return this.count > 0 ? Math.floor(this.count / 10) : 1;
     },
     items() {
       if (this.swcharacters) {
@@ -103,14 +116,9 @@ export default {
     loadAllCharacters() {
       this.getCharacters(this.baseUrl);
     },
-    next() {
+    navigate() {
       if (this.swcharacters) {
-        this.getCharacters(this.swcharacters.next);
-      }
-    },
-    previous() {
-      if (this.swcharacters) {
-        this.getCharacters(this.swcharacters.previous);
+        this.getCharacters(`https://swapi.co/api/people/?page=${this.page}`);
       }
     },
     filter() {
