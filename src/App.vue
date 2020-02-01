@@ -32,7 +32,7 @@
       <template v-slot:extension>
         <v-tabs v-model="tabs" fixed-tabs>
           <v-tabs-slider></v-tabs-slider>
-          <v-tab to="/characters" class="primary--text">
+          <v-tab to="/" class="primary--text">
             <v-icon>mdi-home</v-icon>
           </v-tab>
 

@@ -38,6 +38,7 @@
           :total-visible="7"
           @next="navigate"
           @previous="navigate"
+          @input="navigate"
         ></v-pagination>
       </template>
     </v-data-table>
